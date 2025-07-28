@@ -1,3 +1,11 @@
+// Identitas :
+// Quiz 2 Soal 4
+
+// Nama : Muhammad Renaldi Maulana
+// NIM : 10122002
+// Kelas : IF-1
+// Tanggal : 28-07-2025
+
 class KarakterModel {
   final int id;
   final String name;
@@ -21,12 +29,7 @@ class KarakterModel {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'status': status,
-      'image': image,
-    };
+    return {'id': id, 'name': name, 'status': status, 'image': image};
   }
 }
 
@@ -34,17 +37,17 @@ class CharacterResponse {
   final Info info;
   final List<KarakterModel> results;
 
-  CharacterResponse({
-    required this.info,
-    required this.results,
-  });
+  CharacterResponse({required this.info, required this.results});
 
   factory CharacterResponse.fromJson(Map<String, dynamic> json) {
     return CharacterResponse(
       info: Info.fromJson(json['info'] ?? {}),
-      results: (json['results'] as List<dynamic>? ?? [])
-          .map((item) => KarakterModel.fromJson(item as Map<String, dynamic>))
-          .toList(),
+      results:
+          (json['results'] as List<dynamic>? ?? [])
+              .map(
+                (item) => KarakterModel.fromJson(item as Map<String, dynamic>),
+              )
+              .toList(),
     );
   }
 }
@@ -55,12 +58,7 @@ class Info {
   final String? next;
   final String? prev;
 
-  Info({
-    required this.count,
-    required this.pages,
-    this.next,
-    this.prev,
-  });
+  Info({required this.count, required this.pages, this.next, this.prev});
 
   factory Info.fromJson(Map<String, dynamic> json) {
     return Info(

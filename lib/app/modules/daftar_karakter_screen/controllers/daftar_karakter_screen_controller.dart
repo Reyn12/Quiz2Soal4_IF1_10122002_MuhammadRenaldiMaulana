@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/karakter_model.dart';
 import '../services/karakter_service.dart';
 
 class DaftarKarakterScreenController extends GetxController {
   late final KarakterService _karakterService;
+  late final ScrollController scrollController;
   
   // Observable variables
   final isLoading = false.obs;
@@ -12,11 +14,31 @@ class DaftarKarakterScreenController extends GetxController {
   final totalPages = 1.obs;
   final hasMoreData = true.obs;
   final errorMessage = ''.obs;
+  final showScrollToTopButton = false.obs;
   
   @override
   void onInit() {
     super.onInit();
     _karakterService = Get.put(KarakterService());
+    scrollController = ScrollController();
+    
+    // Listen to scroll changes
+    scrollController.addListener(() {
+      // Show/hide scroll to top button
+      if (scrollController.offset >= 400) {
+        showScrollToTopButton.value = true;
+      } else {
+        showScrollToTopButton.value = false;
+      }
+      
+      // Load more data when reached bottom
+      if (scrollController.position.pixels == scrollController.position.maxScrollExtent &&
+          hasMoreData.value &&
+          !isLoading.value) {
+        loadMoreCharacters();
+      }
+    });
+    
     loadCharacters();
   }
 
@@ -62,5 +84,21 @@ class DaftarKarakterScreenController extends GetxController {
     currentPage.value = 1;
     hasMoreData.value = true;
     await loadCharacters();
+  }
+  
+  void scrollToTop() {
+    if (scrollController.hasClients) {
+      scrollController.animateTo(
+        0,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+  
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
   }
 }
