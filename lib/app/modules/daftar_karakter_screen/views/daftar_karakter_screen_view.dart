@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/daftar_karakter_screen_controller.dart';
+import '../widgets/button_scroll_atas.dart';
 
 class DaftarKarakterScreenView extends GetView<DaftarKarakterScreenController> {
   const DaftarKarakterScreenView({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,12 +26,11 @@ class DaftarKarakterScreenView extends GetView<DaftarKarakterScreenController> {
       backgroundColor: Colors.grey[50],
       body: Obx(() {
         if (controller.characters.isEmpty && controller.isLoading.value) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
-        
-        if (controller.characters.isEmpty && controller.errorMessage.isNotEmpty) {
+
+        if (controller.characters.isEmpty &&
+            controller.errorMessage.isNotEmpty) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -56,7 +56,7 @@ class DaftarKarakterScreenView extends GetView<DaftarKarakterScreenController> {
             ),
           );
         }
-        
+
         return RefreshIndicator(
           onRefresh: () => controller.refreshCharacters(),
           child: GridView.builder(
@@ -68,7 +68,9 @@ class DaftarKarakterScreenView extends GetView<DaftarKarakterScreenController> {
               mainAxisSpacing: 16,
               childAspectRatio: 0.75,
             ),
-            itemCount: controller.characters.length + (controller.hasMoreData.value ? 1 : 0),
+            itemCount:
+                controller.characters.length +
+                (controller.hasMoreData.value ? 1 : 0),
             itemBuilder: (context, index) {
               if (index == controller.characters.length) {
                 return Container(
@@ -82,23 +84,18 @@ class DaftarKarakterScreenView extends GetView<DaftarKarakterScreenController> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        CircularProgressIndicator(
-                          strokeWidth: 2,
-                        ),
+                        CircularProgressIndicator(strokeWidth: 2),
                         SizedBox(height: 8),
                         Text(
                           'Loading...',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey,
-                          ),
+                          style: TextStyle(fontSize: 12, color: Colors.grey),
                         ),
                       ],
                     ),
                   ),
                 );
               }
-              
+
               final character = controller.characters[index];
               return Card(
                 elevation: 6,
@@ -153,7 +150,9 @@ class DaftarKarakterScreenView extends GetView<DaftarKarakterScreenController> {
                           children: [
                             Text(
                               character.name,
-                              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              style: Theme.of(
+                                context,
+                              ).textTheme.titleSmall?.copyWith(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
                               ),
@@ -193,26 +192,10 @@ class DaftarKarakterScreenView extends GetView<DaftarKarakterScreenController> {
           ),
         );
       }),
-      floatingActionButton: Obx(() {
-        return AnimatedOpacity(
-          opacity: controller.showScrollToTopButton.value ? 1.0 : 0.0,
-          duration: const Duration(milliseconds: 300),
-          child: controller.showScrollToTopButton.value
-              ? FloatingActionButton(
-                  onPressed: () => controller.scrollToTop(),
-                  backgroundColor: Colors.blue,
-                  child: const Icon(
-                    Icons.keyboard_arrow_up,
-                    color: Colors.white,
-                    size: 28,
-                  ),
-                )
-              : const SizedBox.shrink(),
-        );
-      }),
+      floatingActionButton: const ButtonScrollAtas(),
     );
   }
-  
+
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {
       case 'alive':
