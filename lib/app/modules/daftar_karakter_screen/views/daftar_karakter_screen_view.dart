@@ -66,7 +66,7 @@ class DaftarKarakterScreenView extends GetView<DaftarKarakterScreenController> {
               crossAxisCount: 2,
               crossAxisSpacing: 16,
               mainAxisSpacing: 16,
-              childAspectRatio: 0.75,
+              childAspectRatio: 0.85,
             ),
             itemCount:
                 controller.characters.length +
@@ -143,7 +143,7 @@ class DaftarKarakterScreenView extends GetView<DaftarKarakterScreenController> {
                     Expanded(
                       flex: 2,
                       child: Padding(
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(10),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -154,12 +154,12 @@ class DaftarKarakterScreenView extends GetView<DaftarKarakterScreenController> {
                                 context,
                               ).textTheme.titleSmall?.copyWith(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 14,
+                                fontSize: 13,
                               ),
-                              maxLines: 2,
+                              maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 6),
                             Container(
                               width: double.infinity,
                               padding: const EdgeInsets.symmetric(
